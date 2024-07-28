@@ -70,7 +70,7 @@ function PokemonInfo({pokemonName}) {
 
   const state = useAsync(fetchPokemonMemoized, initialState)
 
-  const {data, status, error} = state
+  const {data: pokemon, status, error} = state
 
   switch (status) {
     case 'idle':
@@ -80,7 +80,7 @@ function PokemonInfo({pokemonName}) {
     case 'rejected':
       throw error
     case 'resolved':
-      return <PokemonDataView pokemon={state.data} />
+      return <PokemonDataView pokemon={pokemon} />
     default:
       throw new Error('This should be impossible')
   }
