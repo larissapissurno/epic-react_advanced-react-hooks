@@ -28,7 +28,7 @@ function pokemonInfoReducer(state, action) {
   }
 }
 
-function useAsync(asyncCallback, initialState, dependencies) {
+function useAsync(asyncCallback, initialState) {
   const [state, dispatch] = React.useReducer(pokemonInfoReducer, initialState)
 
   React.useEffect(() => {
@@ -50,7 +50,7 @@ function useAsync(asyncCallback, initialState, dependencies) {
     )
 
     // the react-hooks/exhaustive-deps rule. We'll fix this in an extra credit.
-  }, dependencies)
+  }, [asyncCallback])
 
   return state
 }
@@ -62,16 +62,14 @@ function PokemonInfo({pokemonName}) {
     error: null,
   }
 
-  const state = useAsync(
-    () => {
-      if (!pokemonName) {
-        return
-      }
-      return fetchPokemon(pokemonName)
-    },
-    initialState,
-    [pokemonName],
-  )
+  const fetchPokemonMemoized = React.useCallback(() => {
+    if (!pokemonName) {
+      return
+    }
+    return fetchPokemon(pokemonName)
+  }, [pokemonName])
+
+  const state = useAsync(fetchPokemonMemoized, initialState)
 
   const {data, status, error} = state
 
