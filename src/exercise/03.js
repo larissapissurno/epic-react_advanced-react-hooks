@@ -20,8 +20,7 @@ function useCount() {
     throw new Error('Counter context must be used within the CounterProvider')
   }
 
-  const [count, setCount] = context
-  return [count, setCount]
+  return context
 }
 
 function CountDisplay() {
